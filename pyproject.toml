@@ -1,0 +1,35 @@
+[build-system]
+requires = ["hatchling >= 1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "dialog2fhir"
+version = "0.1.0"
+dependencies = [
+    "pydantic>=2.0",
+    "fhir.resources>=8.0",
+]
+authors = [
+  { name="A.Frauchiger" },
+]
+description = "Extract structured FHIR resources from German doctor–patient dialogs using LLMs"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+license-files = ["LICEN[CS]E*"]
+keywords = ["fhir", "llm", "nlp", "clinical", "medical-informatics", "german"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Development Status :: 1 - Planning",
+    "Topic :: Scientific/Engineering :: Medical Science Apps.",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=9.0"]
+
+[project.urls]
+Repository = "https://github.com/A-Frau/dialog2fhir"
+Issues = "https://github.com/A-Frau/dialog2fhir/issues"
+
+[tool.pytest]
+testpaths = ["tests"]
