@@ -4,24 +4,28 @@ The report contains:
 - patient_id: local patient ID from the hospital system (set by our code,
   not extracted by the LLM)
 - chief_complaint: main reason for the visit, if stated
-- diagnoses: list of known diagnoses
+- vital_signs: the most recent set of vital signs mentioned in the dialog
+- known_conditions: list of underlying diseases (Vorerkrankungen)
+- ed_diagnoses: list of diagnoses made in this emergency visit, including
+  ruled-out diagnoses
 - home_medications: list of medications the patient takes at home
 - allergies: list of allergies and intolerances
 - allergy_status: whether allergies are present, none known, unknown to the
   patient, or not discussed in the dialog
-- vital_signs: the most recent set of vital signs mentioned in the dialog
+- disposition: admitted, discharged home or transferred, if stated
 
 Every extracted item stores the exact source text from the dialog.
-Diagnoses, medications and allergies also have a negation flag for
-explicitly absent findings, e.g. "kein Diabetes".
+Known conditions, ED diagnoses, medications and allergies also have a negation flag for
+explicitly absent or ruled-out findings, e.g. "kein Diabetes" or "Appendizitis ausgeschlossen".
 
 See docs/schema-design.md for the FHIR CH mapping and design decisions.
 """
 from typing import Literal
 
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 class ExtractedEntity(BaseModel):
+    model_config = ConfigDict(extra="forbid")
     source_text: str
 
 class NegatableEntity(ExtractedEntity):
@@ -35,7 +39,10 @@ class VitalSign(ExtractedEntity):
     value: str
     unit: str
 
-class Diagnosis(NegatableEntity):
+class KnownCondition(NegatableEntity):
+    condition: str
+
+class EDDiagnosis(NegatableEntity):
     diagnosis: str
 
 class Medication(NegatableEntity):
@@ -48,13 +55,16 @@ class Allergy(NegatableEntity):
     reaction: str | None = None
 
 class PatientReport(BaseModel):
+    model_config = ConfigDict(extra="forbid")
     patient_id: str
     chief_complaint: ChiefComplaint | None = None
     vital_signs: list[VitalSign] = []
-    diagnoses: list[Diagnosis] = []
+    known_conditions: list[KnownCondition] = []
+    ed_diagnoses: list[EDDiagnosis] = []
     home_medications: list[Medication] = []
     allergies: list[Allergy] = []
     allergy_status: Literal["has_allergies", "nilknown", "unavailable", "notasked"] = "notasked"
+    disposition: Literal["admitted", "discharged_home", "transferred"] | None = None
 
 if __name__ == "__main__":
     report = PatientReport(
@@ -67,9 +77,15 @@ if __name__ == "__main__":
             VitalSign(type="sbp", value="120", unit="mmHg", source_text="Blutdruck 120/80"),
             VitalSign(type="dbp", value="80", unit="mmHg", source_text="Blutdruck 120/80"),
         ],
-        diagnoses=[
-            Diagnosis(diagnosis="Diabetes mellitus Typ 2", source_text="Diabetes seit 10 Jahren"),
-            Diagnosis(diagnosis="Koronare Herzkrankheit", negated=True, source_text="keine Herzkrankheit bekannt"),
+        known_conditions=[
+            KnownCondition(condition="Diabetes mellitus Typ 2", source_text="Diabetes seit 10 Jahren"),
+            KnownCondition(condition="Koronare Herzkrankheit", negated=True, source_text="keine Herzkrankheit bekannt"),
+        ],
+        ed_diagnoses=[
+            EDDiagnosis(diagnosis="NSTEMI",
+                        source_text="Sie hatten einen kleinen Herzinfarkt, einen sogenannten NSTEMI"),
+            EDDiagnosis(diagnosis="Lungenembolie", negated=True,
+                        source_text="eine Lungenembolie können wir ausschliessen"),
         ],
         home_medications=[
             Medication(medication="Metformin", dose="500 mg", frequency="2x täglich", source_text="Metformin 500 zweimal am Tag"),
@@ -78,6 +94,7 @@ if __name__ == "__main__":
             Allergy(substance="Penicillin", reaction="Hautausschlag", source_text="allergisch auf Penicillin, gibt Ausschlag"),
         ],
         allergy_status="has_allergies",
+        disposition="admitted",
     )
     print(report.model_dump_json(indent=2))
 
