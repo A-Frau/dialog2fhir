@@ -1,0 +1,20 @@
+Arzt: Grüezi, ich bin Dr. Huber. Sie sind die Tochter von Herrn Baumann?
+Tochter: Ja, genau. Mein Vater ist heute Morgen zu Hause gestürzt.
+Arzt: Herr Baumann, wissen Sie noch, was passiert ist?
+Patient: Ich bin aufgestanden und dann ... ich weiss es nicht mehr.
+Arzt: Welche Krankheiten hat Ihr Vater?
+Tochter: Er hat eine Herzschwäche. Und Vorhofflimmern, glaube ich.
+Arzt: Welche Medikamente nimmt er?
+Tochter: Etwas für das Herz, eine weisse Tablette. Den Namen weiss ich nicht.
+Tochter: Das Marcoumar hat der Hausarzt vor einem Monat abgesetzt, das nimmt er nicht mehr.
+Arzt: Hat er Allergien?
+Tochter: Das weiss ich nicht. Da müssen Sie den Hausarzt fragen.
+Arzt: Beim Eintreffen war der Blutdruck 90 zu 60, der Puls 48.
+Arzt: Nach der Infusion ist der Blutdruck jetzt 110 zu 70, der Puls 52.
+Tochter: Ist das gefährlich?
+Arzt: Wir überwachen ihn jetzt und machen ein Röntgen von der Hüfte.
+Arzt: Frau Baumann, das Röntgen zeigt keinen Bruch.
+Arzt: Aber der Puls Ihres Vaters ist zu langsam. Das nennt man Bradykardie, und das kann den Sturz erklären.
+Tochter: Kann das von der Herztablette kommen?
+Arzt: Das ist möglich. Wir klären das mit dem Hausarzt ab.
+Arzt: Wir nehmen Ihren Vater zur Überwachung auf die Medizin auf.

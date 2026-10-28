@@ -1,0 +1,21 @@
+Ärztin: Grüezi Frau Meier, ich bin Dr. Rossi. Was ist passiert?
+Patientin: Ich habe seit gestern Abend starke Bauchschmerzen, rechts unten.
+Ärztin: Hatten Sie Fieber?
+Patientin: Ja, heute Morgen. Und ich habe einmal erbrochen.
+Ärztin: Haben Sie Vorerkrankungen, zum Beispiel Zucker oder etwas mit dem Herzen?
+Patientin: Nein, kein Zucker. Das Herz ist auch gesund, das hat der Hausarzt letztes Jahr kontrolliert.
+Ärztin: Nehmen Sie Blutverdünner?
+Patientin: Nein, keine Blutverdünner.
+Ärztin: Nehmen Sie sonst Medikamente?
+Patientin: Nur die Pille. Und gestern einmal Dafalgan 1 Gramm, wegen der Schmerzen.
+Ärztin: Haben Sie Allergien gegen Medikamente oder Lebensmittel?
+Patientin: Nein, keine Allergien bekannt.
+Ärztin: Gut. Ihre Temperatur ist jetzt 38,4 Grad, der Puls 104.
+Ärztin: Der Blutdruck ist 125 zu 80, die Sättigung 98 Prozent.
+Patientin: Muss ich operiert werden?
+Ärztin: Das wissen wir noch nicht. Wir machen zuerst einen Ultraschall.
+Ärztin: Frau Meier, der Ultraschall ist unauffällig. Eine Blinddarmentzündung können wir ausschliessen.
+Ärztin: Die Blutwerte und die Beschwerden passen zu einer Magen-Darm-Grippe.
+Patientin: Darf ich nach Hause?
+Ärztin: Ja. Trinken Sie viel und nehmen Sie bei Bedarf Dafalgan, maximal 4 Gramm pro Tag.
+Ärztin: Wenn die Schmerzen stärker werden oder das Fieber steigt, kommen Sie bitte sofort wieder.

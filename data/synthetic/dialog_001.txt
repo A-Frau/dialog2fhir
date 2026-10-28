@@ -1,0 +1,21 @@
+Arzt: Grüezi Herr Keller, ich bin Dr. Brunner vom Notfall. Was führt Sie zu uns?
+Patient: Grüezi. Ich habe seit etwa zwei Stunden so einen Druck auf der Brust.
+Arzt: Strahlt der Schmerz irgendwohin aus?
+Patient: Ja, in den linken Arm. Und mir ist ein bisschen übel.
+Arzt: Haben Sie bekannte Vorerkrankungen?
+Patient: Ich habe Zucker, seit etwa zehn Jahren. Und einen hohen Blutdruck.
+Arzt: Welche Medikamente nehmen Sie regelmässig?
+Patient: Metformin, 500 Milligramm, zweimal am Tag. Dann Concor 5 am Morgen. Und Aspirin Cardio.
+Arzt: Wie viel Aspirin Cardio nehmen Sie?
+Patient: 100 Milligramm, einmal täglich.
+Arzt: Haben Sie Allergien?
+Patient: Ja, auf Penicillin. Da habe ich einmal einen Ausschlag bekommen.
+Arzt: Gut, danke. Wir haben vorhin die Werte gemessen. Der Blutdruck ist 160 zu 95, der Puls 92.
+Arzt: Die Sauerstoffsättigung liegt bei 96 Prozent, die Temperatur bei 36,8 Grad, die Atemfrequenz bei 18.
+Patient: Ist das schlimm?
+Arzt: Wir machen jetzt ein EKG und nehmen Blut ab, dann wissen wir mehr.
+Arzt: Herr Keller, die Resultate sind da. Das Troponin im Blut ist erhöht.
+Arzt: Sie hatten einen kleinen Herzinfarkt, einen sogenannten NSTEMI.
+Patient: Ein Herzinfarkt? Was passiert jetzt?
+Arzt: Wir geben Ihnen jetzt Heparin über die Vene und nehmen Sie auf die Kardiologie auf.
+Arzt: Morgen machen die Kollegen eine Herzkatheteruntersuchung.
