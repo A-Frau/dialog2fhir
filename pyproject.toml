@@ -8,6 +8,8 @@ version = "0.1.0"
 dependencies = [
     "pydantic>=2.0",
     "fhir.resources>=8.0",
+    "anthropic>=2.0",
+    "python-dotenv>=1.0",
 ]
 authors = [
   { name="A.Frauchiger" },

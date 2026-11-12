@@ -1,8 +1,12 @@
 """Pydantic schemas for a patient report extracted from a German doctor-patient dialog.
-
-The report contains:
+A PatientReport contains three parts:
 - patient_id: local patient ID from the hospital system (set by our code,
   not extracted by the LLM)
+- metadata: how the extraction was produced (model name, timestamp,
+  token usage, stop reason), also set by our code
+- extraction: what the LLM extracted from the dialog (ExtractionResult)
+
+ExtractionResult is the format the LLM must answer in. It contains:
 - chief_complaint: main reason for the visit, if stated
 - vital_signs: the most recent set of vital signs mentioned in the dialog
 - known_conditions: list of underlying diseases (Vorerkrankungen)
@@ -20,6 +24,7 @@ explicitly absent or ruled-out findings, e.g. "kein Diabetes" or "Appendizitis a
 
 See docs/schema-design.md for the FHIR CH mapping and design decisions.
 """
+from datetime import datetime
 from typing import Literal
 
 from pydantic import BaseModel, ConfigDict
@@ -54,9 +59,8 @@ class Allergy(NegatableEntity):
     substance: str
     reaction: str | None = None
 
-class PatientReport(BaseModel):
+class ExtractionResult(BaseModel):
     model_config = ConfigDict(extra="forbid")
-    patient_id: str
     chief_complaint: ChiefComplaint | None = None
     vital_signs: list[VitalSign] = []
     known_conditions: list[KnownCondition] = []
@@ -66,9 +70,22 @@ class PatientReport(BaseModel):
     allergy_status: Literal["has_allergies", "nilknown", "unavailable", "notasked"] = "notasked"
     disposition: Literal["admitted", "discharged_home", "transferred"] | None = None
 
+class ExtractionMetadata(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    model_name: str
+    created_at: datetime
+    input_tokens: int
+    output_tokens: int
+    stop_reason: str
+
+class PatientReport(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    patient_id: str
+    metadata: ExtractionMetadata
+    extraction: ExtractionResult
+
 if __name__ == "__main__":
-    report = PatientReport(
-        patient_id="TEST-001",
+    extraction = ExtractionResult(
         chief_complaint=ChiefComplaint(
             complaint="Brustschmerzen", source_text="Brustschmerzen seit 2 Stunden"
         ),
@@ -96,6 +113,9 @@ if __name__ == "__main__":
         allergy_status="has_allergies",
         disposition="admitted",
     )
+    metadata = ExtractionMetadata(model_name="manual-test", created_at=datetime.now(), input_tokens=0, output_tokens=0,
+                                  stop_reason="end_turn")
+    report = PatientReport(patient_id="TEST-001", metadata=metadata, extraction = extraction)
     print(report.model_dump_json(indent=2))
 
 

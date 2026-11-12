@@ -13,6 +13,7 @@ One PatientReport is created per dialog.
 | Field | Type | Filled by | FHIR CH target |
 |---|---|---|---|
 | `patient_id` | `str` | our code | CH Core Patient.identifier (local patient ID from the hospital system) |
+| `metadata` | ExtractionMetadata | our code | not mapped to FHIR (model name, timestamp, tokens) |
 | `chief_complaint` | one ChiefComplaint (optional) | LLM | CH Core Condition, referenced by Encounter.reasonReference |
 | `ed_diagnoses` | list of EDDiagnosis | LLM | CH Core Condition, category `encounter-diagnosis` |
 | `known_conditions` | list of KnownCondition (underlying diseases)| LLM | CH Core Condition, category `problem-list-item` |
@@ -22,8 +23,8 @@ One PatientReport is created per dialog.
 | `vital_signs` | list of VitalSign (most recent set) | LLM | Observation, vital signs profile |
 | `disposition` | fixed choice (optional) | LLM | Encounter (mapping decided in the FHIR conversion issue) |
 
-`patient_id` is never extracted by the LLM. A patient ID is not spoken in
-the dialog, so an LLM asked for it might make one up (hallucination).
+`patient_id` and `metadata` are set by our code. All other fields belong
+to `extraction` (ExtractionResult), the only part the LLM fills in.
 
 The AHV number and EPR-SPID are not used as patient_id: Swiss law
 restricts both, and primary systems may not store them permanently.
@@ -62,8 +63,7 @@ classDiagram
     str substance
     str reaction optional
   }
-  class PatientReport {
-    str patient_id
+  class ExtractionResult {
     ChiefComplaint chief_complaint optional
     list~VitalSign~ vital_signs
     list~KnownCondition~ known_conditions
@@ -73,7 +73,21 @@ classDiagram
     Literal allergy_status
     Literal disposition optional
   }
+  class ExtractionMetadata {
+    str model_name
+    datetime created_at
+    int input_tokens
+    int output_tokens
+    str stop_reason
+  }
+  class PatientReport {
+    str patient_id
+    ExtractionMetadata metadata
+    ExtractionResult extraction
+  }
   BaseModel <|-- ExtractedEntity
+  BaseModel <|-- ExtractionResult
+  BaseModel <|-- ExtractionMetadata
   BaseModel <|-- PatientReport
   ExtractedEntity <|-- ChiefComplaint
   ExtractedEntity <|-- VitalSign
@@ -82,12 +96,14 @@ classDiagram
   NegatableEntity <|-- EDDiagnosis
   NegatableEntity <|-- Medication
   NegatableEntity <|-- Allergy
-  PatientReport *-- "0..1" ChiefComplaint
-  PatientReport *-- "0..*" VitalSign
-  PatientReport *-- "0..*" KnownCondition
-  PatientReport *-- "0..*" EDDiagnosis
-  PatientReport *-- "0..*" Medication
-  PatientReport *-- "0..*" Allergy
+  PatientReport *-- "1" ExtractionMetadata
+  PatientReport *-- "1" ExtractionResult
+  ExtractionResult *-- "0..1" ChiefComplaint
+  ExtractionResult *-- "0..*" VitalSign
+  ExtractionResult *-- "0..*" KnownCondition
+  ExtractionResult *-- "0..*" EDDiagnosis
+  ExtractionResult *-- "0..*" Medication
+  ExtractionResult *-- "0..*" Allergy
 ```
 
 Known conditions (underlying diseases, Vorerkrankungen) and ED diagnoses
