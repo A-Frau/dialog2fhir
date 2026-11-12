@@ -14,11 +14,13 @@ One PatientReport is created per dialog.
 |---|---|---|---|
 | `patient_id` | `str` | our code | CH Core Patient.identifier (local patient ID from the hospital system) |
 | `chief_complaint` | one ChiefComplaint (optional) | LLM | CH Core Condition, referenced by Encounter.reasonReference |
-| `diagnoses` | list of Diagnosis | LLM | CH Core Condition |
+| `ed_diagnoses` | list of EDDiagnosis | LLM | CH Core Condition, category `encounter-diagnosis` |
+| `known_conditions` | list of KnownCondition (underlying diseases)| LLM | CH Core Condition, category `problem-list-item` |
 | `home_medications` | list of Medication | LLM | CH Core MedicationStatement |
 | `allergies` | list of Allergy | LLM | CH AllergyIntolerance |
 | `allergy_status` | fixed choice | LLM | IPS `no-known-allergies` / `no-allergy-info` |
 | `vital_signs` | list of VitalSign (most recent set) | LLM | Observation, vital signs profile |
+| `disposition` | fixed choice (optional) | LLM | Encounter (mapping decided in the FHIR conversion issue) |
 
 `patient_id` is never extracted by the LLM. A patient ID is not spoken in
 the dialog, so an LLM asked for it might make one up (hallucination).
@@ -28,16 +30,72 @@ restricts both, and primary systems may not store them permanently.
 The EPR-SPID is only needed when sending data to the EPD.
 
 ## Class structure
+```mermaid
+classDiagram
+  class BaseModel
+  class ExtractedEntity {
+    str source_text
+  }
+  class NegatableEntity {
+    bool negated = False
+  }
+  class ChiefComplaint {
+    str complaint
+  }
+  class VitalSign {
+    Literal type: hr, rr, spo2, temp, sbp, dbp
+    str value
+    str unit
+  }
+  class KnownCondition {
+    str condition
+  }
+  class EDDiagnosis {
+    str diagnosis
+  }
+  class Medication {
+    str medication
+    str dose optional
+    str frequency optional
+  }
+  class Allergy {
+    str substance
+    str reaction optional
+  }
+  class PatientReport {
+    str patient_id
+    ChiefComplaint chief_complaint optional
+    list~VitalSign~ vital_signs
+    list~KnownCondition~ known_conditions
+    list~EDDiagnosis~ ed_diagnoses
+    list~Medication~ home_medications
+    list~Allergy~ allergies
+    Literal allergy_status
+    Literal disposition optional
+  }
+  BaseModel <|-- ExtractedEntity
+  BaseModel <|-- PatientReport
+  ExtractedEntity <|-- ChiefComplaint
+  ExtractedEntity <|-- VitalSign
+  ExtractedEntity <|-- NegatableEntity
+  NegatableEntity <|-- KnownCondition
+  NegatableEntity <|-- EDDiagnosis
+  NegatableEntity <|-- Medication
+  NegatableEntity <|-- Allergy
+  PatientReport *-- "0..1" ChiefComplaint
+  PatientReport *-- "0..*" VitalSign
+  PatientReport *-- "0..*" KnownCondition
+  PatientReport *-- "0..*" EDDiagnosis
+  PatientReport *-- "0..*" Medication
+  PatientReport *-- "0..*" Allergy
 ```
-BaseModel
-  └── ExtractedEntity        source_text
-         ├── VitalSign       (no negation)
-         ├── ChiefComplaint  (no negation)
-         └── NegatableEntity     + negated
-                ├── Diagnosis
-                ├── Medication
-                └── Allergy
-```
+
+Known conditions (underlying diseases, Vorerkrankungen) and ED diagnoses
+(Notfalldiagnosen) are separate classes: the first is the patient's
+history, the second is what the doctor diagnoses or rules out in this visit.
+
+Unknown fields are rejected (`extra="forbid"`), so a misspelled field from
+the LLM causes an error instead of silent data loss.
 
 Every item stores the exact `source_text` from the dialog, so each value
 can be traced back to what was said.
@@ -70,9 +128,10 @@ general. These cases name no specific substance, so they are not items:
 The status values follow the FHIR List Empty Reasons codes, which keep
 "unknown" and "not asked" apart. IPS merges both into `no-allergy-info`.
 
-For diagnoses and medications, v0.1 has only the item level: a finding is
-either stated (`negated = False`), explicitly absent (`negated = True`,
-e.g. "kein Diabetes") or not mentioned (no item).
+For known conditions, ED diagnoses and medications, v0.1 has only the item
+level: a finding is either stated (`negated = False`), explicitly absent or
+ruled out (`negated = True`, e.g. "kein Diabetes", "Appendizitis
+ausgeschlossen") or not mentioned (no item).
 
 Two entities have no negation flag:
 - **Chief complaint:** it is the reason for the visit, so it is always
@@ -109,8 +168,8 @@ component.
   An age stated in the dialog ("ich bin 72") gives no exact date of birth,
   so mapping it would mean inventing data. Options for later: store an
   estimated birth year, or record age as an Observation.
-- **Out of scope:** other symptoms, and status fields for medications and
-  diagnoses
+- **Out of scope:** other symptoms, and list status fields like
+  `allergy_status` for medications and known conditions
 
 ## Sources
 - [CH Core](https://fhir.ch/ig/ch-core/index.html)
