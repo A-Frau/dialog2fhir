@@ -1,0 +1,64 @@
+{
+  "patient_id": "dialog_003",
+  "metadata": {
+    "model_name": "claude-sonnet-5-5",
+    "created_at": "2026-11-23T15:30:32.755752",
+    "input_tokens": 4744,
+    "output_tokens": 495,
+    "stop_reason": "end_turn"
+  },
+  "extraction": {
+    "chief_complaint": {
+      "source_text": "Mein Vater ist heute Morgen zu Hause gestürzt.",
+      "complaint": "Sturz"
+    },
+    "vital_signs": [
+      {
+        "source_text": "Nach der Infusion ist der Blutdruck jetzt 110 zu 70, der Puls 52.",
+        "type": "sbp",
+        "value": "110",
+        "unit": "mmHg"
+      },
+      {
+        "source_text": "Nach der Infusion ist der Blutdruck jetzt 110 zu 70, der Puls 52.",
+        "type": "dbp",
+        "value": "70",
+        "unit": "mmHg"
+      },
+      {
+        "source_text": "Nach der Infusion ist der Blutdruck jetzt 110 zu 70, der Puls 52.",
+        "type": "hr",
+        "value": "52",
+        "unit": "/min"
+      }
+    ],
+    "known_conditions": [
+      {
+        "source_text": "Er hat eine Herzschwäche.",
+        "negated": false,
+        "condition": "Herzinsuffizienz"
+      },
+      {
+        "source_text": "Und Vorhofflimmern, glaube ich.",
+        "negated": false,
+        "condition": "Vorhofflimmern"
+      }
+    ],
+    "ed_diagnoses": [
+      {
+        "source_text": "das Röntgen zeigt keinen Bruch",
+        "negated": true,
+        "diagnosis": "Fraktur"
+      },
+      {
+        "source_text": "Das nennt man Bradykardie",
+        "negated": false,
+        "diagnosis": "Bradykardie"
+      }
+    ],
+    "home_medications": [],
+    "allergies": [],
+    "allergy_status": "unavailable",
+    "disposition": "admitted"
+  }
+}

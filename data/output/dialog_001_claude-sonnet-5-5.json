@@ -1,0 +1,106 @@
+{
+  "patient_id": "dialog_001",
+  "metadata": {
+    "model_name": "claude-sonnet-5-5",
+    "created_at": "2026-11-23T15:30:25.244856",
+    "input_tokens": 4830,
+    "output_tokens": 814,
+    "stop_reason": "end_turn"
+  },
+  "extraction": {
+    "chief_complaint": {
+      "source_text": "Ich habe seit etwa zwei Stunden so einen Druck auf der Brust.",
+      "complaint": "Brustdruck"
+    },
+    "vital_signs": [
+      {
+        "source_text": "Der Blutdruck ist 160 zu 95",
+        "type": "sbp",
+        "value": "160",
+        "unit": "mmHg"
+      },
+      {
+        "source_text": "Der Blutdruck ist 160 zu 95",
+        "type": "dbp",
+        "value": "95",
+        "unit": "mmHg"
+      },
+      {
+        "source_text": "der Puls 92",
+        "type": "hr",
+        "value": "92",
+        "unit": "/min"
+      },
+      {
+        "source_text": "Die Sauerstoffsättigung liegt bei 96 Prozent",
+        "type": "spo2",
+        "value": "96",
+        "unit": "%"
+      },
+      {
+        "source_text": "die Temperatur bei 36,8 Grad",
+        "type": "temp",
+        "value": "36,8",
+        "unit": "°C"
+      },
+      {
+        "source_text": "die Atemfrequenz bei 18",
+        "type": "rr",
+        "value": "18",
+        "unit": "/min"
+      }
+    ],
+    "known_conditions": [
+      {
+        "source_text": "Ich habe Zucker, seit etwa zehn Jahren.",
+        "negated": false,
+        "condition": "Diabetes mellitus"
+      },
+      {
+        "source_text": "Und einen hohen Blutdruck.",
+        "negated": false,
+        "condition": "Arterielle Hypertonie"
+      }
+    ],
+    "ed_diagnoses": [
+      {
+        "source_text": "Sie hatten einen kleinen Herzinfarkt, einen sogenannten NSTEMI.",
+        "negated": false,
+        "diagnosis": "NSTEMI"
+      }
+    ],
+    "home_medications": [
+      {
+        "source_text": "Metformin, 500 Milligramm, zweimal am Tag.",
+        "negated": false,
+        "medication": "Metformin",
+        "dose": "500 Milligramm",
+        "frequency": "zweimal am Tag"
+      },
+      {
+        "source_text": "Concor 5 am Morgen.",
+        "negated": false,
+        "medication": "Concor",
+        "dose": "5",
+        "frequency": "am Morgen"
+      },
+      {
+        "source_text": "Aspirin Cardio",
+        "negated": false,
+        "medication": "Aspirin Cardio",
+        "dose": "100 Milligramm",
+        "frequency": "einmal täglich"
+      }
+    ],
+    "allergies": [
+      {
+        "source_text": "Ja, auf Penicillin. Da habe ich einmal einen Ausschlag bekommen.",
+        "negated": false,
+        "substance": "Penicillin",
+        "reaction": "Ausschlag"
+      }
+    ],
+    "allergy_status": "has_allergies",
+    "disposition": "admitted"
+  }
+}

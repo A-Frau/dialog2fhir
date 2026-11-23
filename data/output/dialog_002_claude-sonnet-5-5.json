@@ -1,0 +1,91 @@
+{
+  "patient_id": "dialog_002",
+  "metadata": {
+    "model_name": "claude-sonnet-5-5",
+    "created_at": "2026-11-23T15:30:29.139750",
+    "input_tokens": 4817,
+    "output_tokens": 652,
+    "stop_reason": "end_turn"
+  },
+  "extraction": {
+    "chief_complaint": {
+      "source_text": "Ich habe seit gestern Abend starke Bauchschmerzen, rechts unten.",
+      "complaint": "Bauchschmerzen rechts unten"
+    },
+    "vital_signs": [
+      {
+        "source_text": "Ihre Temperatur ist jetzt 38,4 Grad",
+        "type": "temp",
+        "value": "38,4",
+        "unit": "°C"
+      },
+      {
+        "source_text": "der Puls 104",
+        "type": "hr",
+        "value": "104",
+        "unit": "/min"
+      },
+      {
+        "source_text": "Der Blutdruck ist 125 zu 80",
+        "type": "sbp",
+        "value": "125",
+        "unit": "mmHg"
+      },
+      {
+        "source_text": "Der Blutdruck ist 125 zu 80",
+        "type": "dbp",
+        "value": "80",
+        "unit": "mmHg"
+      },
+      {
+        "source_text": "die Sättigung 98 Prozent",
+        "type": "spo2",
+        "value": "98",
+        "unit": "%"
+      }
+    ],
+    "known_conditions": [
+      {
+        "source_text": "Nein, kein Zucker.",
+        "negated": true,
+        "condition": "Diabetes mellitus"
+      },
+      {
+        "source_text": "Das Herz ist auch gesund",
+        "negated": true,
+        "condition": "Herzerkrankung"
+      }
+    ],
+    "ed_diagnoses": [
+      {
+        "source_text": "Eine Blinddarmentzündung können wir ausschliessen.",
+        "negated": true,
+        "diagnosis": "Appendizitis"
+      },
+      {
+        "source_text": "Die Blutwerte und die Beschwerden passen zu einer Magen-Darm-Grippe.",
+        "negated": false,
+        "diagnosis": "Gastroenteritis"
+      }
+    ],
+    "home_medications": [
+      {
+        "source_text": "Nein, keine Blutverdünner.",
+        "negated": true,
+        "medication": "Blutverdünner",
+        "dose": null,
+        "frequency": null
+      },
+      {
+        "source_text": "Nur die Pille.",
+        "negated": false,
+        "medication": "Pille",
+        "dose": null,
+        "frequency": null
+      }
+    ],
+    "allergies": [],
+    "allergy_status": "nilknown",
+    "disposition": "discharged_home"
+  }
+}
